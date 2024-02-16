@@ -166,8 +166,7 @@ class Face {
         rightEyeOpenProbability = data['rightEyeOpenProbability'],
         smilingProbability = data['smilingProbability'],
         trackingId = data['trackingId'],
-        _landmarks = Map<FaceLandmarkType, FaceLandmark?>.fromIterables(
-            FaceLandmarkType.values,
+        landmarks = Map<FaceLandmarkType, FaceLandmark?>.fromIterables(FaceLandmarkType.values,
             FaceLandmarkType.values.map((FaceLandmarkType type) {
           final List<dynamic>? pos = data['landmarks'][_enumToString(type)];
           return (pos == null)
@@ -177,24 +176,20 @@ class Face {
                   Offset(pos[0], pos[1]),
                 );
         })),
-        _contours = Map<FaceContourType, FaceContour?>.fromIterables(
-            FaceContourType.values,
+        contours = Map<FaceContourType, FaceContour?>.fromIterables(FaceContourType.values,
             FaceContourType.values.map((FaceContourType type) {
           /// added empty map to pass the tests
-          final List<dynamic>? arr =
-              (data['contours'] ?? <String, dynamic>{})[_enumToString(type)];
+          final List<dynamic>? arr = (data['contours'] ?? <String, dynamic>{})[_enumToString(type)];
           return (arr == null)
               ? null
               : FaceContour._(
                   type,
-                  arr
-                      .map<Offset>((dynamic pos) => Offset(pos[0], pos[1]))
-                      .toList(),
+                  arr.map<Offset>((dynamic pos) => Offset(pos[0], pos[1])).toList(),
                 );
         }));
 
-  final Map<FaceLandmarkType, FaceLandmark?> _landmarks;
-  final Map<FaceContourType, FaceContour?> _contours;
+  final Map<FaceLandmarkType, FaceLandmark?> landmarks;
+  final Map<FaceContourType, FaceContour?> contours;
 
   /// The axis-aligned bounding rectangle of the detected face.
   ///
@@ -249,12 +244,24 @@ class Face {
   /// Gets the landmark based on the provided [FaceLandmarkType].
   ///
   /// Null if landmark was not detected.
-  FaceLandmark? getLandmark(FaceLandmarkType landmark) => _landmarks[landmark];
+  FaceLandmark? getLandmark(FaceLandmarkType landmark) => landmarks[landmark];
 
   /// Gets the contour based on the provided [FaceContourType].
   ///
   /// Null if contour was not detected.
-  FaceContour? getContour(FaceContourType contour) => _contours[contour];
+  FaceContour? getContour(FaceContourType contour) => contours[contour];
+
+  Face({
+    required this.landmarks,
+    required this.contours,
+    required this.boundingBox,
+    this.headEulerAngleY,
+    this.headEulerAngleZ,
+    this.leftEyeOpenProbability,
+    this.rightEyeOpenProbability,
+    this.smilingProbability,
+    this.trackingId,
+  });
 }
 
 /// Represent a face landmark.
