@@ -88,10 +88,10 @@ class GoogleVisionImage {
     GoogleVisionImageMetadata? metadata,
     String? filePath,
     Uint8List? bytes,
-  })  : _filePath = filePath,
-        _metadata = metadata,
-        _bytes = bytes,
-        _type = type;
+  })  : filePath = filePath,
+        metadata = metadata,
+        bytes = bytes,
+        type = type;
 
   /// Construct a [GoogleVisionImage] from a file.
   factory GoogleVisionImage.fromFile(File imageFile) {
@@ -128,16 +128,16 @@ class GoogleVisionImage {
     );
   }
 
-  final Uint8List? _bytes;
-  final String? _filePath;
-  final GoogleVisionImageMetadata? _metadata;
-  final _ImageType _type;
+  final Uint8List? bytes;
+  final String? filePath;
+  final GoogleVisionImageMetadata? metadata;
+  final _ImageType type;
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
-        'type': _enumToString(_type),
-        'bytes': _bytes,
-        'path': _filePath,
-        'metadata': _type == _ImageType.bytes ? _metadata!._serialize() : null,
+        'type': _enumToString(type),
+        'bytes': bytes,
+        'path': filePath,
+        'metadata': type == _ImageType.bytes ? metadata!._serialize() : null,
       };
 }
 
